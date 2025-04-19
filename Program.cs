@@ -20,25 +20,31 @@ namespace hhhhhh
     {
         static void Main()
         {
-            
+            DerivedClass derivedClass = new DerivedClass();
+            derivedClass.PrintOut();
+
+            ITest i1=derivedClass as ITest;
+            ITest2 i2=derivedClass as ITest2;
+            i1.PrintOut();
+            i2.PrintOut();
         }
     }
-    class Test : IComparable
+    interface ITest
     {
-        public int value;
-        public int CompareTo(object obj)
-        {
-            Test testOther = obj as Test;
-            if(this.value<testOther.value)
-            {
-                return -1;
-            }
-            else if(this.value>testOther.value){
-                return 1;
-            }   
-            return 0;
+        void PrintOut();
+    }
+    interface ITest2 {
+        void PrintOut();
+    }
 
-        }
+    class MyBaseClass
+    {
+        public void PrintOut() => Console.WriteLine("Base实现");
+    }
+    class DerivedClass : MyBaseClass, ITest,ITest2
+    {
+        void ITest.PrintOut() => Console.WriteLine("显示实现ITest"); 
+        void ITest2.PrintOut()=>Console.WriteLine("显示实现ITest2");
     }
 
 }
