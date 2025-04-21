@@ -12,6 +12,7 @@ using _2024_11_25_c_;
 using Super;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Collections;
 
 namespace hhhhhh
 {
@@ -20,32 +21,56 @@ namespace hhhhhh
     {
         static void Main()
         {
-            DerivedClass derivedClass = new DerivedClass();
-            derivedClass.PrintOut();
-
-            ITest i1=derivedClass as ITest;
-            ITest2 i2=derivedClass as ITest2;
-            i1.PrintOut();
-            i2.PrintOut();
+            string[] colors = { "hel", "yaya", "yoyo" };
+            Spectrum spectrum = new Spectrum();
+            spectrum.colors = colors;
+            foreach (string color in spectrum)
+            {
+                Console.WriteLine(color);   
+            }
         }
     }
-    interface ITest
+    class ColorEnumerator : IEnumerator
     {
-        void PrintOut();
+        public string[] colors;
+        public int index=-1;
+
+        public ColorEnumerator(string[] colors) 
+        {
+            this.colors = colors;
+            index = -1;
+        }
+        public object Current
+        {
+            get 
+            {
+                if (index < 0) throw new IndexOutOfRangeException();
+                if(index >= colors.Length) throw new IndexOutOfRangeException();
+                return colors[index];   
+            }
+        }
+
+        public bool MoveNext()
+        {
+            index ++;
+            if(index <colors.Length) return true;
+            else return false;
+        }
+
+        public void Reset()
+        {
+            index = -1;
+        }
+
     }
-    interface ITest2 {
-        void PrintOut();
+    class Spectrum : IEnumerable
+    {
+        public string[] colors;
+        public IEnumerator GetEnumerator()
+        {
+            return new ColorEnumerator(colors);
+        }
     }
 
-    class MyBaseClass
-    {
-        public void PrintOut() => Console.WriteLine("Base实现");
-    }
-    class DerivedClass : MyBaseClass, ITest,ITest2
-    {
-        void ITest.PrintOut() => Console.WriteLine("显示实现ITest"); 
-        void ITest2.PrintOut()=>Console.WriteLine("显示实现ITest2");
-    }
 
 }
-    
