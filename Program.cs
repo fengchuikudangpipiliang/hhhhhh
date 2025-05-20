@@ -29,5 +29,9 @@ namespace hhhhhh
             yield return "world!";
         }
     }
-
+    class Student
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+    }
 }
